@@ -1,0 +1,106 @@
+---
+name: CI
+on:
+  pull_request:
+    branches:
+      - main
+      - 'v*'
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      docs: ${{ steps.filter.outputs.docs }}
+      protos: ${{ steps.filter.outputs.protos }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            code:
+              - '!(docs/**)'
+            docs:
+              - 'docs/**'
+            protos:
+              - '**/*.proto'
+  build:
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.x
+
+      - name: Build
+        run: go build -v ./...
+
+  test:
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.x
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/.cache/diofis/bin
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
+
+      - name: Generate
+        run: make generate
+
+      - name: Check repo status
+        run: |-
+          REPO_STATUS="$(git status --porcelain)"
+          if [[ ! -z $REPO_STATUS ]]; then
+            echo "::error::Uncommitted changes detected"
+            echo "$REPO_STATUS"
+            exit 1
+          fi
+      - name: Test
+        run: make test-all
+
+  golangci:
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.x
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3.1.0
+        with:
+          version: latest
+          args: '--config=.golangci.yaml -v'
+
+  buf:
+    needs: changes
+    if: ${{ needs.changes.outputs.protos == 'true' }}
+    name: Proto check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Buf
+        uses: bufbuild/buf-setup-action@v1.1.0
+
+      - name: Lint protos
+        uses: bufbuild/buf-lint-action@v1.0.0
