@@ -60,9 +60,6 @@ jobs:
             ~/.cache/diofis/bin
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
 
-      - name: Generate
-        run: make generate
-
       - name: Check repo status
         run: |-
           REPO_STATUS="$(git status --porcelain)"
@@ -72,7 +69,7 @@ jobs:
             exit 1
           fi
       - name: Test
-        run: make test-all
+        run: make test
 
   golangci:
     needs: changes

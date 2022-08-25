@@ -1,0 +1,19 @@
+input: |
+  ADD -10
+  ADD 10
+  ADD ACC
+  ADD UP
+expected: |
+  instructions:
+    - add:
+        source:
+          literal: -10
+    - add:
+        source:
+          literal: 10
+    - add:
+        source:
+          register: ACC
+    - add:
+        source:
+          register: UP

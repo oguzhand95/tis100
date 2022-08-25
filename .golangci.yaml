@@ -3,11 +3,17 @@ run:
   go: "1.19"
   timeout: 300s
   build-tags:
-    - tests
+    - test
 
 linters-settings:
   exhaustive:
     default-signifies-exhaustive: true
+
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/oguzhand95/tis100)
 
   gofumpt:
     extra-rules: true
@@ -42,6 +48,7 @@ linters:
     - exportloopref
     - forbidigo
     - forcetypeassert
+    - gci
     - goconst
     - gocritic
     - godot

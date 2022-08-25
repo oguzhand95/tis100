@@ -1,0 +1,9 @@
+input: |
+  SAV
+  SAV
+  SAV
+expected: |
+  instructions:
+    - simpleOp: SAV
+    - simpleOp: SAV
+    - simpleOp: SAV

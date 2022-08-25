@@ -1,0 +1,19 @@
+input: |
+  SUB -10
+  SUB 10
+  SUB ACC
+  SUB UP
+expected: |
+  instructions:
+    - sub:
+        source:
+          literal: -10
+    - sub:
+        source:
+          literal: 10
+    - sub:
+        source:
+          register: ACC
+    - sub:
+        source:
+          register: UP

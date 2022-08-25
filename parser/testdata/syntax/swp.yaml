@@ -1,0 +1,9 @@
+input: |
+  SWP
+  SWP
+  SWP
+expected: |
+  instructions:
+    - simpleOp: SWP
+    - simpleOp: SWP
+    - simpleOp: SWP

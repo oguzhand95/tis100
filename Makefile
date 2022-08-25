@@ -10,7 +10,7 @@ deps:
 
 .PHONY: test
 test: $(GOTESTSUM)
-	@ $(GOTESTSUM) -- -tags=tests $(COVERPROFILE) -cover ./...
+	@ $(GOTESTSUM) -- -tags=test $(COVERPROFILE) -cover ./...
 
 .PHONY: lint
 lint: $(GOLANGCI_LINT)
@@ -25,7 +25,7 @@ compile:
 	@ go build -o bin/tis100 cmd/main.go
 
 .PHONY: build
-build: lint test package
+build: clean-tools lint test package
 
 .PHONY: clean-tools
 clean-tools:

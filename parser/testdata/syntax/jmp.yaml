@@ -1,0 +1,14 @@
+input: |
+  START:
+  JMP START
+  JMP START
+  JMP START
+expected: |
+  instructions:
+    - label: START
+    - jmp:
+        label: START
+    - jmp:
+        label: START
+    - jmp:
+        label: START

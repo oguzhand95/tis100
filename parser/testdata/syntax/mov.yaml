@@ -1,0 +1,21 @@
+input: |
+  MOV 10, ACC
+  MOV ACC, DOWN
+  MOV UP, DOWN
+expected: |
+  instructions:
+    - mov:
+        source:
+          literal: 10
+        destination:
+          register: ACC
+    - mov:
+        source:
+          register: ACC
+        destination:
+          register: DOWN
+    - mov:
+        source:
+          register: UP
+        destination:
+          register: DOWN
