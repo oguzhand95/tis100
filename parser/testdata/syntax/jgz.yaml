@@ -1,0 +1,14 @@
+input: |
+  START:
+  JGZ START
+  JGZ START
+  JGZ START
+expected: |
+  instructions:
+    - label: START
+    - jgz:
+        label: START
+    - jgz:
+        label: START
+    - jgz:
+        label: START

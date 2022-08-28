@@ -1,0 +1,23 @@
+input: |
+  JRO -1
+  JRO 0
+  JRO 1
+  JRO ACC
+  JRO UP
+expected: |
+  instructions:
+    - jro:
+        source:
+          literal: -1
+    - jro:
+        source:
+          literal: 0
+    - jro:
+        source:
+          literal: 1
+    - jro:
+        source:
+          register: ACC
+    - jro:
+        source:
+          register: UP

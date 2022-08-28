@@ -1,0 +1,9 @@
+input: |
+  NOP
+  NOP
+  NOP
+expected: |
+  instructions:
+    - simpleOp: NOP
+    - simpleOp: NOP
+    - simpleOp: NOP

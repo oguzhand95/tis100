@@ -1,0 +1,14 @@
+input: |
+  START:
+  JEZ START
+  JEZ START
+  JEZ START
+expected: |
+  instructions:
+    - label: START
+    - jez:
+        label: START
+    - jez:
+        label: START
+    - jez:
+        label: START
